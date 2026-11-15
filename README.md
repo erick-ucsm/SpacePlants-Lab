@@ -6,6 +6,7 @@ A serious web game where you design a space growth module, grow real plants that
 
 ## ▶️ Play now (no download needed)
 **https://erick-ucsm.github.io/SpacePlants-Lab/**
+**https://TU-erick-ucsm.github.io/SpacePlants-Lab/presentation/**
 
 Works in Chrome, Edge and Firefox on a computer. The first load takes a few seconds.
 Language: English by default · Spanish available in **Settings → Language**.
