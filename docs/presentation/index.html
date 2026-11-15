@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SpacePlants Lab · NASA Space Apps Challenge 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04060d;
+  --ink:#eef3ff;
+  --muted:#93a1bd;
+  --dim:#5d6a85;
+  --mint:#3ef0a5;
+  --cyan:#47c6ff;
+  --pink:#ff5fd7;
+  --amber:#ffc24b;
+  --red:#ff6b6b;
+  --glass:rgba(255,255,255,.045);
+  --stroke:rgba(255,255,255,.09);
+  --stroke2:rgba(255,255,255,.16);
+  --radius:22px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+#estrellas{position:fixed;inset:0;z-index:0}
+.aurora{position:fixed;inset:-20%;z-index:0;pointer-events:none;filter:blur(80px);opacity:.55;transition:transform 1.4s var(--ease)}
+.aurora i{position:absolute;border-radius:50%}
+.aurora .a1{width:46vw;height:46vw;left:5%;top:10%;background:radial-gradient(circle,rgba(62,240,165,.30),transparent 65%)}
+.aurora .a2{width:50vw;height:50vw;right:0;top:-5%;background:radial-gradient(circle,rgba(71,198,255,.26),transparent 65%)}
+.aurora .a3{width:40vw;height:40vw;right:15%;bottom:0;background:radial-gradient(circle,rgba(255,95,215,.20),transparent 65%)}
+.grano{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---------- Barra superior ---------- */
+.top{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(18px,3vw,40px);pointer-events:none}
+.marca{display:flex;align-items:center;gap:12px;pointer-events:auto}
+.marca img{width:34px;height:34px;border-radius:50%;box-shadow:0 0 0 1px var(--stroke2),0 6px 20px rgba(71,198,255,.25)}
+.marca b{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.2px}
+.marca span{display:block;font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+.etiqueta-top{pointer-events:auto;font-size:12px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;padding:8px 14px;border:1px solid var(--stroke);border-radius:999px;background:rgba(5,8,18,.5);backdrop-filter:blur(10px)}
+
+/* ---------- Diapositivas ---------- */
+.deck{position:fixed;inset:0;z-index:5}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:96px clamp(20px,5vw,84px) 110px;opacity:0;visibility:hidden;transform:translateX(6%) scale(.97);filter:blur(10px);transition:opacity .9s var(--ease),transform 1s var(--ease),filter .9s var(--ease),visibility 0s linear 1s;overflow:hidden}
+.slide.activa{opacity:1;visibility:visible;transform:none;filter:none;transition:opacity .9s var(--ease),transform 1s var(--ease),filter .9s var(--ease),visibility 0s}
+.slide.antes{transform:translateX(-6%) scale(.97)}
+.lienzo{width:100%;max-width:1320px;height:100%;max-height:760px;position:relative}
+
+[data-a]{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform 1.1s var(--ease);transition-delay:0s}
+.slide.activa [data-a]{opacity:1;transform:none;transition-delay:calc(var(--d,0) * 90ms + 250ms)}
+[data-a="izq"]{transform:translateX(-36px)}
+[data-a="der"]{transform:translateX(36px)}
+[data-a="zoom"]{transform:scale(.92)}
+
+/* ---------- Tipografia ---------- */
+.kicker{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mint);font-weight:600}
+.kicker:before{content:"";width:22px;height:1px;background:currentColor;opacity:.7}
+h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.02em;line-height:1.02}
+h1{font-size:clamp(46px,7.6vw,112px)}
+h2{font-size:clamp(32px,4.2vw,62px);margin-top:16px}
+h3{font-size:clamp(17px,1.35vw,21px);font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.grad{background:linear-gradient(100deg,#fff 0%,#c9fbe6 35%,var(--mint) 60%,var(--cyan) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.grad-led{background:linear-gradient(100deg,var(--pink),#ff8fb4 45%,var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(16px,1.35vw,20px);line-height:1.55;color:var(--muted);max-width:56ch}
+.lead strong{color:var(--ink);font-weight:600}
+.peq{font-size:13.5px;line-height:1.5;color:var(--muted)}
+.fuente{position:absolute;bottom:-34px;left:0;font-size:11px;color:var(--dim)}
+
+/* ---------- Componentes ---------- */
+.vidrio{background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid var(--stroke);border-radius:var(--radius);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 30px 60px -30px rgba(0,0,0,.7)}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;border:1px solid var(--stroke2);background:rgba(255,255,255,.04);font-size:13.5px;font-weight:500;white-space:nowrap}
+.chip svg{width:16px;height:16px}
+.punto{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px var(--mint)}
+.captura{border-radius:16px;overflow:hidden;border:1px solid var(--stroke2);box-shadow:0 40px 80px -30px rgba(0,0,0,.9),0 0 0 6px rgba(255,255,255,.025)}
+.captura img{width:100%;height:auto}
+.ico{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:rgba(62,240,165,.1);border:1px solid rgba(62,240,165,.25);color:var(--mint);flex:none}
+.ico svg{width:22px;height:22px}
+.ico.c{background:rgba(71,198,255,.1);border-color:rgba(71,198,255,.25);color:var(--cyan)}
+.ico.p{background:rgba(255,95,215,.1);border-color:rgba(255,95,215,.25);color:var(--pink)}
+.ico.a{background:rgba(255,194,75,.1);border-color:rgba(255,194,75,.25);color:var(--amber)}
+.ico.r{background:rgba(255,107,107,.1);border-color:rgba(255,107,107,.25);color:var(--red)}
+
+/* ---------- 1 Portada ---------- */
+.portada{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,60px);align-items:center;height:100%}
+.portada h1{margin:22px 0 22px}
+.portada .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+.orbita{position:relative;aspect-ratio:1;width:min(100%,520px);margin-left:auto}
+.orbita .anillo{position:absolute;inset:0;border-radius:50%;border:1px solid var(--stroke2)}
+.orbita .anillo.r2{inset:12%;border-style:dashed;border-color:rgba(71,198,255,.25);animation:girar 60s linear infinite}
+.orbita .anillo.r3{inset:-8%;border-color:rgba(62,240,165,.12);animation:girar 90s linear infinite reverse}
+.orbita .anillo i{position:absolute;top:-5px;left:50%;width:10px;height:10px;border-radius:50%;background:var(--cyan);box-shadow:0 0 16px var(--cyan)}
+.orbita .anillo.r3 i{background:var(--mint);box-shadow:0 0 16px var(--mint)}
+.orbita .logo{position:absolute;inset:22%;border-radius:50%;overflow:hidden;box-shadow:0 0 0 1px var(--stroke2),0 0 80px rgba(71,198,255,.35),0 0 160px rgba(62,240,165,.15);animation:flotar 7s ease-in-out infinite}
+.orbita .logo img{width:100%;height:100%;object-fit:cover}
+.flotante{position:absolute;padding:12px 16px;display:flex;gap:12px;align-items:center;animation:flotar 6s ease-in-out infinite}
+.flotante b{font-family:var(--display);font-size:22px;display:block;line-height:1}
+.flotante small{font-size:11.5px;color:var(--muted)}
+.f1{left:-6%;bottom:16%;animation-delay:-2s}
+.f2{right:-4%;top:12%;animation-delay:-4s}
+@keyframes girar{to{transform:rotate(360deg)}}
+@keyframes flotar{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* ---------- 2 Reto ---------- */
+.reto{display:grid;grid-template-rows:auto 1fr auto;height:100%;gap:28px}
+.reto .cab{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:end}
+.ruta{position:relative;display:grid;grid-template-columns:repeat(4,1fr);align-items:center;padding:10px 0}
+.ruta svg.linea{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ruta .linea path{fill:none;stroke:url(#gruta);stroke-width:2;stroke-dasharray:6 8;stroke-dashoffset:400;transition:stroke-dashoffset 2.6s var(--ease) .6s}
+.slide.activa .ruta .linea path{stroke-dashoffset:0}
+.parada{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.astro{border-radius:50%;box-shadow:inset -14px -10px 30px rgba(0,0,0,.55),0 0 40px rgba(255,255,255,.08)}
+.parada .nombre{font-family:var(--display);font-weight:600;font-size:18px}
+.parada .det{font-size:12.5px;color:var(--muted);max-width:20ch;line-height:1.45}
+.parada .anio{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mint)}
+.datos{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.dato{padding:22px 24px;display:flex;gap:16px;align-items:flex-start}
+.dato b{font-family:var(--display);font-size:clamp(28px,2.6vw,40px);line-height:1;display:block;letter-spacing:-.02em}
+.dato p{margin-top:6px}
+
+/* ---------- 3 Solucion ---------- */
+.solucion{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,4vw,56px);align-items:center;height:100%}
+.solucion h2{font-size:clamp(30px,3.4vw,50px)}
+.flujo{display:flex;flex-direction:column;gap:4px;margin-top:22px;position:relative}
+.flujo:before{content:"";position:absolute;left:21px;top:22px;bottom:22px;width:1px;background:linear-gradient(var(--mint),var(--cyan),var(--pink));opacity:.5}
+.paso{display:flex;gap:16px;align-items:center;padding:8px 16px 8px 0;position:relative}
+.paso .num{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:16px;background:#0a1020;border:1px solid var(--stroke2);flex:none;position:relative;z-index:1}
+.paso h3{font-size:17px}
+.paso p{font-size:13px;color:var(--muted);margin-top:3px}
+.marco-juego{position:relative}
+.marco-juego .captura{transform:perspective(1600px) rotateY(-8deg) rotateX(3deg);transition:transform 1.2s var(--ease)}
+.marco-juego:hover .captura{transform:perspective(1600px) rotateY(0) rotateX(0)}
+.marco-juego .brillo{position:absolute;inset:-12%;background:radial-gradient(circle at 50% 50%,rgba(255,95,215,.22),transparent 60%);filter:blur(40px);z-index:-1}
+.nota{position:absolute;padding:10px 14px;font-size:12.5px;display:flex;align-items:center;gap:10px;white-space:nowrap}
+.nota.n1{left:-5%;top:14%}
+.nota.n2{right:-3%;bottom:20%}
+.nota.n3{left:6%;bottom:-6%}
+
+/* ---------- 4 Ciencia ---------- */
+.ciencia{display:grid;grid-template-rows:auto 1fr;gap:26px;height:100%}
+.ciencia .cab{display:flex;justify-content:space-between;align-items:flex-end;gap:30px}
+.plantas{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.planta{padding:20px 18px;display:flex;flex-direction:column;gap:12px;transition:transform .5s var(--ease),border-color .5s}
+.planta:hover{transform:translateY(-6px);border-color:var(--stroke2)}
+.planta .emoji{height:96px;border-radius:14px;overflow:hidden;background:#0a0f1c;position:relative}
+.planta .emoji svg{width:100%;height:100%}
+.planta h3{font-size:17px}
+.planta .var{font-size:12px;color:var(--dim);margin-top:4px}
+.barras{display:flex;gap:4px}
+.barras i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.08)}
+.planta .fila{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}
+.planta .fila b{color:var(--ink);font-weight:600}
+.planta .mision{font-size:12px;line-height:1.45;color:var(--muted);border-top:1px solid var(--stroke);padding-top:10px}
+.real{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.real .item{padding:16px 18px;display:flex;gap:14px;align-items:center}
+.real h3{font-size:15px}
+.real p{font-size:12.5px;color:var(--muted);margin-top:2px}
+
+/* ---------- 5 Decisiones ---------- */
+.decisiones{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,3.5vw,50px);align-items:center;height:100%}
+.leyenda{display:flex;flex-direction:column;gap:12px;margin-top:26px}
+.leyenda .l{display:flex;gap:14px;align-items:center;padding:14px 18px}
+.borde{width:38px;height:38px;border-radius:10px;border:3px solid;flex:none}
+.leyenda h3{font-size:15.5px}
+.leyenda p{font-size:12.5px;color:var(--muted);margin-top:2px}
+.ejemplo{margin-top:16px;padding:16px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13.5px}
+.ejemplo .op{font-family:var(--display);font-size:20px;color:var(--dim)}
+.apilado{position:relative;height:100%;min-height:420px}
+.apilado .captura{position:absolute;width:82%}
+.apilado .c1{right:0;top:2%}
+.apilado .c2{left:0;bottom:4%;width:64%}
+.unidades{position:absolute;right:4%;bottom:0;padding:14px 18px;display:flex;gap:22px;z-index:3}
+.unidades b{font-family:var(--display);font-size:24px;display:block;line-height:1}
+.unidades small{font-size:11.5px;color:var(--muted)}
+
+/* ---------- 6 Minijuegos ---------- */
+.minijuegos{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(22px,3.5vw,50px);align-items:center;height:100%}
+.tabs{display:flex;flex-direction:column;gap:10px;margin-top:26px}
+.tab{display:flex;align-items:center;gap:14px;padding:13px 16px;text-align:left;border-radius:16px;border:1px solid transparent;transition:background .4s,border-color .4s,transform .4s var(--ease)}
+.tab:hover{background:rgba(255,255,255,.035)}
+.tab.on{background:linear-gradient(90deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border-color:var(--stroke2);transform:translateX(6px)}
+.tab .t{flex:1;min-width:0}
+.tab .var{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.tab h3{font-size:16px;margin-top:2px}
+.tab .cuenta{font-family:var(--display);font-size:13px;color:var(--muted);white-space:nowrap}
+.visor{position:relative}
+.visor .captura{position:relative}
+.visor .captura img{transition:opacity .5s var(--ease),transform .7s var(--ease)}
+.visor .captura img.saliendo{opacity:0;transform:scale(1.02)}
+.visor .pie{margin-top:16px;padding:16px 20px;font-size:13.5px;line-height:1.5;color:var(--muted);min-height:76px}
+.visor .pie b{color:var(--ink)}
+
+/* ---------- 7 Cierre ---------- */
+.cierre{display:grid;grid-template-rows:1fr auto;height:100%;gap:28px;text-align:center}
+.cierre .centro{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px}
+.cierre h2{font-size:clamp(34px,5vw,74px);max-width:16ch;margin:0}
+.criterios{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;text-align:left}
+.criterio{padding:16px 18px}
+.criterio .n{font-family:var(--display);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mint)}
+.criterio h3{font-size:16px;margin:6px 0 4px}
+.criterio p{font-size:12.5px;color:var(--muted);line-height:1.45}
+.tecno{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.logo-final{width:110px;height:110px;border-radius:50%;box-shadow:0 0 0 1px var(--stroke2),0 0 90px rgba(62,240,165,.35);animation:flotar 7s ease-in-out infinite}
+
+/* ---------- Controles ---------- */
+.controles{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 clamp(18px,3vw,40px) 20px;display:flex;align-items:center;gap:18px}
+.progreso{position:fixed;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.06);z-index:21}
+.progreso i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--cyan),var(--pink));box-shadow:0 0 14px rgba(71,198,255,.7);transition:width .9s var(--ease)}
+.contador{font-family:var(--display);font-size:14px;color:var(--muted);letter-spacing:.06em;min-width:72px}
+.contador b{color:var(--ink);font-size:20px}
+.puntos{display:flex;gap:8px;flex:1;justify-content:center}
+.puntos button{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.2);transition:width .5s var(--ease),background .5s}
+.puntos button.on{width:28px;background:var(--ink)}
+.puntos button:hover{background:rgba(255,255,255,.5)}
+.btns{display:flex;gap:8px}
+.btn{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--stroke2);background:rgba(8,12,24,.6);backdrop-filter:blur(12px);transition:background .3s,transform .3s var(--ease),border-color .3s}
+.btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
+.btn:active{transform:scale(.94)}
+.btn:disabled{opacity:.3;pointer-events:none}
+.btn svg{width:20px;height:20px}
+.btn.prim{background:var(--ink);color:#04060d;border-color:var(--ink)}
+.btn.prim:hover{background:#fff}
+.ayuda{position:fixed;right:clamp(18px,3vw,40px);top:70px;z-index:20;font-size:11.5px;color:var(--dim);display:flex;gap:6px;align-items:center}
+kbd{font-family:var(--body);font-size:11px;padding:2px 7px;border:1px solid var(--stroke2);border-radius:6px;background:rgba(255,255,255,.04);color:var(--muted)}
+
+/* ---------- Responsivo ---------- */
+@media (max-width:1100px){
+  .plantas{grid-template-columns:repeat(3,1fr)}
+  .real{grid-template-columns:repeat(2,1fr)}
+  .criterios{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:860px){
+  .slide{align-items:flex-start;padding:84px 20px 100px;overflow-y:auto}
+  .lienzo{height:auto;max-height:none}
+  .portada,.solucion,.decisiones,.minijuegos,.reto .cab{grid-template-columns:1fr}
+  .orbita{width:min(78%,360px);margin:10px auto 0}
+  .flotante{display:none}
+  .ruta{grid-template-columns:repeat(2,1fr);row-gap:26px}
+  .ruta svg.linea{display:none}
+  .datos{grid-template-columns:1fr}
+  .plantas{grid-template-columns:repeat(2,1fr)}
+  .real{grid-template-columns:1fr}
+  .ciencia .cab{flex-direction:column;align-items:flex-start}
+  .apilado{min-height:0;height:auto;display:flex;flex-direction:column;gap:14px}
+  .apilado .captura,.apilado .c2{position:relative;width:100%;inset:auto}
+  .unidades{position:relative;right:auto}
+  .criterios{grid-template-columns:1fr 1fr}
+  .marco-juego .captura{transform:none}
+  .nota{display:none}
+  .ayuda,.etiqueta-top{display:none}
+  .reto,.ciencia,.cierre{height:auto}
+  .puntos{display:none}
+  .controles{justify-content:space-between;background:linear-gradient(transparent,rgba(4,6,13,.9) 40%);padding-top:20px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<canvas id="estrellas"></canvas>
+<div class="aurora" id="aurora"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+<div class="grano"></div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="gruta" x1="0" x2="1"><stop offset="0" stop-color="#3ef0a5"/><stop offset=".6" stop-color="#47c6ff"/><stop offset="1" stop-color="#ff5fd7"/></linearGradient>
+    <symbol id="i-hoja" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+    <symbol id="i-cohete" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></g></symbol>
+    <symbol id="i-gota" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></symbol>
+    <symbol id="i-sol" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g></symbol>
+    <symbol id="i-termo" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></symbol>
+    <symbol id="i-viento" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></g></symbol>
+    <symbol id="i-chip" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9zM9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></g></symbol>
+    <symbol id="i-rayo" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+    <symbol id="i-balanza" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 21h10M3 7h18"/><path d="m6 7-3 7a3.5 3.5 0 0 0 6 0Z"/><path d="m18 7-3 7a3.5 3.5 0 0 0 6 0Z"/></g></symbol>
+    <symbol id="i-mando" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 11h4M8 9v4M15 12h.01M18 10h.01"/><path d="M17.32 5H6.68a4 4 0 0 0-3.98 3.59L2 15a3 3 0 0 0 5.5 1.7L9 15h6l1.5 1.7A3 3 0 0 0 22 15l-.7-6.41A4 4 0 0 0 17.32 5z"/></g></symbol>
+    <symbol id="i-cosecha" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M12 20v-8"/><path d="M12 12c0-3 2-6 6-6 0 3-2 6-6 6Z"/><path d="M12 14c0-3-2-5-5-5 0 3 2 5 5 5Z"/></g></symbol>
+    <symbol id="i-semilla" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="14" rx="5" ry="7"/><path d="M12 7v14"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-capas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7Z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></g></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="marca"><img src="assets/logo.png" alt="Logo SpacePlants Lab"><div><b>SpacePlants Lab</b><span>Space Apps 2026</span></div></div>
+  <div class="etiqueta-top">Space Mission Design Game</div>
+</header>
+<div class="ayuda"><kbd>←</kbd><kbd>→</kbd> navigate · <kbd>F</kbd> fullscreen</div>
+
+<main class="deck" id="deck">
+
+<!-- 1 · PORTADA -->
+<section class="slide" data-titulo="Cover">
+  <div class="lienzo portada">
+    <div>
+      <span class="kicker" data-a style="--d:0">NASA Space Apps Challenge 2026</span>
+      <h1 data-a style="--d:1"><span class="grad">SpacePlants</span><br>Lab</h1>
+      <p class="lead" data-a style="--d:2">A web game where you <strong>design, grow and harvest</strong> real NASA plants inside a space module. Every decision matters: if the plant survives, so does your mission.</p>
+      <div class="chips" data-a style="--d:3">
+        <span class="chip"><span class="punto"></span>Playable web game</span>
+        <span class="chip"><svg><use href="#i-hoja"/></svg>5 plants grown in space</span>
+        <span class="chip"><svg><use href="#i-mando"/></svg>5 educational minigames</span>
+      </div>
+    </div>
+    <div class="orbita" data-a="zoom" style="--d:2">
+      <div class="anillo r3"><i></i></div>
+      <div class="anillo"></div>
+      <div class="anillo r2"><i></i></div>
+      <div class="logo"><img src="assets/logo.png" alt=""></div>
+      <div class="flotante vidrio f1"><div class="ico"><svg><use href="#i-hoja"/></svg></div><div><b>16 h / 8 h</b><small>real photoperiod</small></div></div>
+      <div class="flotante vidrio f2"><div class="ico c"><svg><use href="#i-cohete"/></svg></div><div><b>Challenge</b><small>Space Mission Design Game</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · EL RETO -->
+<section class="slide" data-titulo="The challenge">
+  <div class="lienzo reto">
+    <div class="cab">
+      <div>
+        <span class="kicker" data-a style="--d:0">The challenge</span>
+        <h2 data-a style="--d:1">To reach Mars, we first have to <span class="grad">learn to grow food.</span></h2>
+      </div>
+      <p class="lead" data-a style="--d:2">The farther we travel, the less we can rely on Earth. Growing food in space is hard: without gravity water doesn't fall, air doesn't circulate on its own, and every watt counts.</p>
+    </div>
+    <div class="ruta" data-a style="--d:3">
+      <svg class="linea" viewBox="0 0 1000 200" preserveAspectRatio="none"><path d="M125 42 C 260 -10, 380 80, 500 40 S 740 -10, 875 40"/></svg>
+      <div class="parada"><div class="astro" style="width:78px;height:78px;background:radial-gradient(circle at 35% 30%,#7fc8ff,#1f5fbf 60%,#0b2a5c)"></div><span class="anio">Today</span><span class="nombre">Earth</span><span class="det">Everything grows with gravity, soil and atmosphere.</span></div>
+      <div class="parada"><div class="astro" style="width:60px;height:60px;background:radial-gradient(circle at 35% 30%,#ffffff,#c9cfdb 50%,#5d6577);border-radius:14px;transform:rotate(12deg)"></div><span class="anio">Since 2015</span><span class="nombre">Space Station</span><span class="det">Veggie: astronauts eat the first lettuce grown in orbit.</span></div>
+      <div class="parada"><div class="astro" style="width:66px;height:66px;background:radial-gradient(circle at 35% 30%,#f2f2f2,#9a9aa2 55%,#4a4a52)"></div><span class="anio">Artemis · 2026</span><span class="nombre">The Moon</span><span class="det">Artemis II takes humans around the Moon again.</span></div>
+      <div class="parada"><div class="astro" style="width:72px;height:72px;background:radial-gradient(circle at 35% 30%,#ffb08a,#c4502a 55%,#5c1f10)"></div><span class="anio">The future</span><span class="nombre">Mars</span><span class="det">Years-long missions: crews will need to grow part of their food.</span></div>
+    </div>
+    <div class="datos">
+      <div class="dato vidrio" data-a style="--d:4"><div class="ico p"><svg><use href="#i-rayo"/></svg></div><div><b>~70 W</b><p class="peq">is what Veggie uses for lights, fans and electronics.</p></div></div>
+      <div class="dato vidrio" data-a style="--d:5"><div class="ico a"><svg><use href="#i-hoja"/></svg></div><div><b>137 days</b><p class="peq">lasted the chile pepper experiment on the Station, the longest plant study.</p></div></div>
+      <div class="dato vidrio" data-a style="--d:6"><div class="ico c"><svg><use href="#i-cohete"/></svg></div><div><b>406 771 km</b><p class="peq">Artemis II record distance (April 2026): humans never went farther.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · LA SOLUCION -->
+<section class="slide" data-titulo="Our solution">
+  <div class="lienzo solucion">
+    <div>
+      <span class="kicker" data-a style="--d:0">Our solution</span>
+      <h2 data-a style="--d:1">A serious game where <span class="grad">you are the mission engineer.</span></h2>
+      <div class="flujo">
+        <div class="paso" data-a="izq" style="--d:2"><span class="num">1</span><div><h3>Choose the seed</h3><p>5 real plants, from easy to hard.</p></div></div>
+        <div class="paso" data-a="izq" style="--d:3"><span class="num">2</span><div><h3>Design your module</h3><p>9 component categories · mass in kg · power in W.</p></div></div>
+        <div class="paso" data-a="izq" style="--d:4"><span class="num">3</span><div><h3>Grow in real time</h3><p>5 live variables and a 16-hour light photoperiod.</p></div></div>
+        <div class="paso" data-a="izq" style="--d:5"><span class="num">4</span><div><h3>Play to recharge</h3><p>Each variable is restored with its own minigame.</p></div></div>
+        <div class="paso" data-a="izq" style="--d:6"><span class="num">5</span><div><h3>Harvest on time</h3><p>You win only if the plant is healthy: over 80% health.</p></div></div>
+      </div>
+    </div>
+    <div class="marco-juego" data-a="der" style="--d:3">
+      <div class="brillo"></div>
+      <div class="captura"><img src="assets/cultivo.jpg" alt="Game growing screen"></div>
+      <div class="nota vidrio n1"><div class="ico" style="width:30px;height:30px;border-radius:9px"><svg style="width:16px;height:16px"><use href="#i-gota"/></svg></div>Wick watering, just like Veggie</div>
+      <div class="nota vidrio n2"><div class="ico p" style="width:30px;height:30px;border-radius:9px"><svg style="width:16px;height:16px"><use href="#i-sol"/></svg></div>Red + blue LEDs on at the same time</div>
+      <div class="nota vidrio n3"><div class="ico c" style="width:30px;height:30px;border-radius:9px"><svg style="width:16px;height:16px"><use href="#i-capas"/></svg></div>Arcillite substrate, NASA's choice</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · CIENCIA REAL -->
+<section class="slide" data-titulo="Real science">
+  <div class="lienzo ciencia">
+    <div class="cab">
+      <div>
+        <span class="kicker" data-a style="--d:0">Real science</span>
+        <h2 data-a style="--d:1">Only plants NASA has <span class="grad">already harvested</span> in space.</h2>
+      </div>
+      <p class="lead" data-a style="--d:2;max-width:40ch">Each one has its own ideal humidity, temperature and light range, and a different difficulty.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="plantas" id="plantas"></div>
+      <div class="real">
+        <div class="item vidrio" data-a style="--d:8"><div class="ico c"><svg><use href="#i-gota"/></svg></div><div><h3>Absorbent wick</h3><p>Veggie's passive watering, no pumps.</p></div></div>
+        <div class="item vidrio" data-a style="--d:9"><div class="ico a"><svg><use href="#i-capas"/></svg></div><div><h3>Arcillite</h3><p>Calcined clay that holds water and air.</p></div></div>
+        <div class="item vidrio" data-a style="--d:10"><div class="ico p"><svg><use href="#i-sol"/></svg></div><div><h3>Red + blue light</h3><p>Mixed at the same time, as NASA does.</p></div></div>
+        <div class="item vidrio" data-a style="--d:11"><div class="ico"><svg><use href="#i-hoja"/></svg></div><div><h3>Grows and wilts</h3><p>Each species grows with its real shape.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · DECISIONES -->
+<section class="slide" data-titulo="Decisions">
+  <div class="lienzo decisiones">
+    <div>
+      <span class="kicker" data-a style="--d:0">Mission design</span>
+      <h2 data-a style="--d:1">Every component is an <span class="grad">engineering decision.</span></h2>
+      <div class="leyenda">
+        <div class="l vidrio" data-a="izq" style="--d:2"><span class="borde" style="border-color:var(--mint)"></span><div><h3>Recommended</h3><p>Optimal for your plant, with reasonable power use.</p></div></div>
+        <div class="l vidrio" data-a="izq" style="--d:3"><span class="borde" style="border-color:var(--red)"></span><div><h3>Not recommended</h3><p>Harmful, useless, or uses too much power.</p></div></div>
+        <div class="l vidrio" data-a="izq" style="--d:4"><span class="borde" style="border-color:#b8bfcf"></span><div><h3>Neutral</h3><p>Works, but with a cost or a drawback.</p></div></div>
+      </div>
+      <div class="ejemplo vidrio" data-a style="--d:5">
+        <span class="chip">Radish</span><span class="op">+</span><span class="chip">Absorbent wick</span><span class="op">=</span>
+        <span class="chip" style="border-color:rgba(255,107,107,.5);color:var(--red)"><svg><use href="#i-x"/></svg>Root rot</span>
+      </div>
+    </div>
+    <div class="apilado" data-a="der" style="--d:3">
+      <div class="captura c1"><img src="assets/componentes.jpg" alt="Color-coded component selection"></div>
+      <div class="captura c2"><img src="assets/dificultad.jpg" alt="Mission difficulty popup"></div>
+      <div class="unidades vidrio"><div><b>22 kg</b><small>rocket mass limit</small></div><div><b>kg · W</b><small>real mass and power</small></div><div><b>3</b><small>difficulty levels</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · MINIJUEGOS -->
+<section class="slide" data-titulo="Minigames">
+  <div class="lienzo minijuegos">
+    <div>
+      <span class="kicker" data-a style="--d:0">Learn by playing</span>
+      <h2 data-a style="--d:1">5 variables. <span class="grad-led">5 minigames.</span></h2>
+      <div class="tabs" id="tabs"></div>
+    </div>
+    <div class="visor" data-a="der" style="--d:3">
+      <div class="captura"><img id="visor-img" src="assets/tresenraya.jpg" alt="Minigame"></div>
+      <div class="pie vidrio" id="visor-pie"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · CIERRE -->
+<section class="slide" data-titulo="Closing">
+  <div class="lienzo cierre">
+    <div class="centro">
+      <img class="logo-final" src="assets/logo.png" alt="" data-a="zoom" style="--d:0">
+      <h2 data-a style="--d:1">Every harvest in space starts with <span class="grad">a good decision.</span></h2>
+      <p class="lead" data-a style="--d:2;text-align:center">SpacePlants Lab turns NASA's plant-growth science into an experience anyone can play in a web browser.</p>
+      <div class="tecno" data-a style="--d:3">
+        <span class="chip"><svg><use href="#i-chip"/></svg>Godot 4 · GDScript</span>
+        <span class="chip"><svg><use href="#i-capas"/></svg>Web export</span>
+        <span class="chip"><svg><use href="#i-balanza"/></svg>Balance tested by simulation</span>
+        <span class="chip"><svg><use href="#i-check"/></svg>Real mission data</span>
+      </div>
+    </div>
+    <div class="criterios">
+      <div class="criterio vidrio" data-a style="--d:4"><span class="n">Impact</span><h3>Learning through play</h3><p>Real space science for students of any age.</p></div>
+      <div class="criterio vidrio" data-a style="--d:5"><span class="n">Creativity</span><h3>5 minigames</h3><p>Spacecraft, pioneers, planets and aliens in one game.</p></div>
+      <div class="criterio vidrio" data-a style="--d:6"><span class="n">Validity</span><h3>NASA data</h3><p>Veggie, Plant Habitat, Artemis and real missions.</p></div>
+      <div class="criterio vidrio" data-a style="--d:7"><span class="n">Relevance</span><h3>Mission design</h3><p>Answers the Space Mission Design Game challenge.</p></div>
+      <div class="criterio vidrio" data-a style="--d:8"><span class="n">Presentation</span><h3>Thank you!</h3><p>SpacePlants Lab Team · Space Apps 2026.</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<nav class="controles" aria-label="Navigation">
+  <div class="contador" id="contador"><b>01</b> / 07</div>
+  <div class="puntos" id="puntos"></div>
+  <div class="btns">
+    <button class="btn" id="pantalla" title="Fullscreen (F)" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
+    <button class="btn" id="anterior" title="Previous (←)" aria-label="Previous slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+    <button class="btn prim" id="siguiente" title="Next (→)" aria-label="Next slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+  </div>
+</nav>
+<div class="progreso"><i id="barra"></i></div>
+
+<script>
+(() => {
+  const PLANTAS = [
+    {n:"Red romaine lettuce", v:"'Outredgeous'", d:1, e:"Easy", dias:28, m:"Veggie VEG-01: astronauts ate it in August 2015.", c:"#3ef0a5", hoja:"#8a1c3c"},
+    {n:"Mizuna mustard", v:"Brassica rapa", d:2, e:"Easy", dias:29, m:"Veggie VEG-03 (2017) and light tests in VEG-04.", c:"#3ef0a5", hoja:"#6bd34a"},
+    {n:"Kale", v:"'Red Russian'", d:3, e:"Medium", dias:32, m:"Planted in Veggie in 2018 for Thanksgiving.", c:"#ffc24b", hoja:"#3f7f6c"},
+    {n:"Radish", v:"Raphanus sativus", d:4, e:"Medium-High", dias:30, m:"Plant Habitat-02 (2020): ready in 27 days.", c:"#ff9a4b", hoja:"#4f9a3c"},
+    {n:"Chile pepper", v:"'Española Improved'", d:5, e:"Hard", dias:100, m:"Plant Habitat-04 (2021): 26 peppers and tacos in orbit.", c:"#ff6b6b", hoja:"#2f7a33"}
+  ];
+  const dibujo = (p, i) => {
+    const h = p.hoja;
+    if (i === 3) return `<svg viewBox="0 0 120 90"><rect width="120" height="90" fill="#0a0f1c"/><rect x="20" y="66" width="80" height="24" fill="#6b3f22"/><circle cx="60" cy="68" r="12" fill="#d8264e"/><path d="M60 80 L57 90 L63 90Z" fill="#f2ece4"/>${[-50,-25,0,25,50].map(a=>`<ellipse cx="60" cy="40" rx="8" ry="22" fill="${h}" transform="rotate(${a} 60 62)"/>`).join("")}</svg>`;
+    if (i === 4) return `<svg viewBox="0 0 120 90"><rect width="120" height="90" fill="#0a0f1c"/><rect x="20" y="74" width="80" height="16" fill="#6b3f22"/><path d="M60 76 L60 14 M60 40 L38 24 M60 50 L84 32" stroke="#4a7a35" stroke-width="3" fill="none"/>${[[46,30,-40],[74,40,40],[54,22,-20],[66,26,25],[52,56,-50],[70,60,50]].map(([x,y,a])=>`<ellipse cx="${x}" cy="${y}" rx="5" ry="10" fill="${h}" transform="rotate(${a} ${x} ${y})"/>`).join("")}<path d="M38 26 q-4 16 2 22 q4 -10 -2 -22Z" fill="#e2261b"/><path d="M84 34 q4 16 -2 22 q-4 -10 2 -22Z" fill="#3aa53a"/></svg>`;
+    const n = i === 1 ? 11 : (i === 2 ? 7 : 9);
+    const ancho = i === 1 ? 4 : (i === 2 ? 11 : 8);
+    let s = `<svg viewBox="0 0 120 90"><rect width="120" height="90" fill="#0a0f1c"/><rect x="20" y="74" width="80" height="16" fill="#6b3f22"/>`;
+    for (let k = 0; k < n; k++) {
+      const a = -60 + 120 * k / (n - 1);
+      s += `<ellipse cx="60" cy="${i===2?36:40}" rx="${ancho}" ry="${i===2?24:28}" fill="${h}" stroke="rgba(0,0,0,.25)" transform="rotate(${a} 60 74)"/>`;
+      if (i === 2) s += `<line x1="60" y1="74" x2="60" y2="50" stroke="#7a3a8a" stroke-width="2" transform="rotate(${a} 60 74)"/>`;
+    }
+    return s + `</svg>`;
+  };
+  document.getElementById("plantas").innerHTML = PLANTAS.map((p, i) => `
+    <article class="planta vidrio" data-a style="--d:${i + 3}">
+      <div class="emoji">${dibujo(p, i)}</div>
+      <div><h3>${p.n}</h3><div class="var">${p.v}</div></div>
+      <div class="barras">${[1,2,3,4,5].map(k => `<i style="${k <= p.d ? `background:${p.c};box-shadow:0 0 10px ${p.c}66` : ""}"></i>`).join("")}</div>
+      <div class="fila"><span>Difficulty <b>${p.e}</b></span><span><b>${p.dias}</b> days</span></div>
+      <p class="mision">${p.m}</p>
+    </article>`).join("");
+
+  const MJ = [
+    {var:"Light", t:"Tic-tac-toe", ico:"i-sol", cls:"p", img:"tresenraya", c:"Vs. the computer", pie:"<b>Light · Tic-tac-toe.</b> Recharges the LED battery. The player decides when to turn the lights on and off to follow the 16 h light / 8 h dark photoperiod."},
+    {var:"Water", t:"Spacecraft puzzle", ico:"i-cohete", cls:"c", img:"deslizante", c:"5 spacecraft", pie:"<b>Water · Sliding puzzle.</b> Voyager 1, Apollo 11, Discovery, New Horizons and Orion, with their launch, mission, main achievement and history."},
+    {var:"Humidity", t:"Pioneers memory game", ico:"i-gota", cls:"", img:"memoria", c:"28 pioneers", pie:"<b>Humidity · Memory.</b> 28 people who made NASA history across 3 generations: from Goddard and Katherine Johnson to Sally Ride and Carl Sagan."},
+    {var:"Temperature", t:"Extreme temperatures", ico:"i-termo", cls:"a", img:"intercambio", c:"5 worlds", pie:"<b>Temperature · Swap puzzle.</b> The Sun, Venus, the Moon, Mars and Europa: their extreme temperatures and the missions that study them."},
+    {var:"Oxygen", t:"Whack-an-alien", ico:"i-viento", cls:"r", img:"alien", c:"30 seconds", pie:"<b>Oxygen · Whack-an-alien.</b> Reflexes on the lunar surface and, alongside, what NASA really says about the search for extraterrestrial life."}
+  ];
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = MJ.map((m, i) => `
+    <button class="tab${i === 0 ? " on" : ""}" data-i="${i}" data-a="izq" style="--d:${i + 2}">
+      <span class="ico ${m.cls}"><svg><use href="#${m.ico}"/></svg></span>
+      <span class="t"><span class="var">${m.var}</span><h3>${m.t}</h3></span>
+      <span class="cuenta">${m.c}</span>
+    </button>`).join("");
+  const visorImg = document.getElementById("visor-img");
+  const visorPie = document.getElementById("visor-pie");
+  let mjActual = 0, autoMJ;
+  const mostrarMJ = (i) => {
+    mjActual = i;
+    tabs.querySelectorAll(".tab").forEach((t, k) => t.classList.toggle("on", k === i));
+    visorImg.classList.add("saliendo");
+    setTimeout(() => {
+      visorImg.src = `assets/${MJ[i].img}.jpg`;
+      visorImg.alt = MJ[i].t;
+      visorImg.onload = () => visorImg.classList.remove("saliendo");
+      if (visorImg.complete) visorImg.classList.remove("saliendo");
+    }, 260);
+    visorPie.innerHTML = MJ[i].pie;
+  };
+  visorPie.innerHTML = MJ[0].pie;
+  tabs.addEventListener("click", (e) => {
+    const b = e.target.closest(".tab");
+    if (!b) return;
+    clearInterval(autoMJ);
+    mostrarMJ(+b.dataset.i);
+  });
+  MJ.forEach(m => { const im = new Image(); im.src = `assets/${m.img}.jpg`; });
+
+  const slides = [...document.querySelectorAll(".slide")];
+  const total = slides.length;
+  const puntos = document.getElementById("puntos");
+  puntos.innerHTML = slides.map((s, i) => `<button aria-label="Go to ${s.dataset.titulo}" title="${s.dataset.titulo}" data-i="${i}"></button>`).join("");
+  const contador = document.getElementById("contador");
+  const barra = document.getElementById("barra");
+  const btnAnt = document.getElementById("anterior");
+  const btnSig = document.getElementById("siguiente");
+  const aurora = document.getElementById("aurora");
+  let actual = -1, bloqueado = false;
+
+  const ir = (n) => {
+    n = Math.max(0, Math.min(total - 1, n));
+    if (n === actual || bloqueado) return;
+    bloqueado = true;
+    setTimeout(() => bloqueado = false, 450);
+    slides.forEach((s, i) => {
+      s.classList.toggle("activa", i === n);
+      s.classList.toggle("antes", i < n);
+      if (i === n) s.scrollTop = 0;
+    });
+    actual = n;
+    contador.innerHTML = `<b>${String(n + 1).padStart(2, "0")}</b> / ${String(total).padStart(2, "0")}`;
+    barra.style.width = `${(n + 1) / total * 100}%`;
+    puntos.querySelectorAll("button").forEach((b, i) => b.classList.toggle("on", i === n));
+    btnAnt.disabled = n === 0;
+    btnSig.disabled = n === total - 1;
+    aurora.style.transform = `translate(${(n - 3) * -2.5}%, ${Math.sin(n) * 2}%) rotate(${n * 8}deg)`;
+    try { history.replaceState(null, "", `#d${n + 1}`); } catch (e) {}
+    clearInterval(autoMJ);
+    if (slides[n].dataset.titulo === "Minigames") {
+      autoMJ = setInterval(() => mostrarMJ((mjActual + 1) % MJ.length), 4500);
+    }
+  };
+
+  btnAnt.addEventListener("click", () => ir(actual - 1));
+  btnSig.addEventListener("click", () => ir(actual + 1));
+  puntos.addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) ir(+b.dataset.i); });
+
+  const pantalla = async () => {
+    try {
+      if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+      else await document.exitFullscreen();
+    } catch (e) {}
+  };
+  document.getElementById("pantalla").addEventListener("click", pantalla);
+
+  document.addEventListener("keydown", (e) => {
+    if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); ir(actual + 1); }
+    else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); ir(actual - 1); }
+    else if (e.key === "Home") ir(0);
+    else if (e.key === "End") ir(total - 1);
+    else if (e.key === "f" || e.key === "F") pantalla();
+    else if (/^[1-7]$/.test(e.key)) ir(+e.key - 1);
+  });
+
+  let x0 = null, y0 = null;
+  document.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, {passive: true});
+  document.addEventListener("touchend", (e) => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.4) ir(actual + (dx < 0 ? 1 : -1));
+    x0 = null;
+  }, {passive: true});
+
+  const desdeHash = () => {
+    const m = /^#d([1-7])$/.exec(location.hash);
+    return m ? +m[1] - 1 : 0;
+  };
+  window.addEventListener("hashchange", () => ir(desdeHash()));
+  ir(desdeHash());
+
+  const cv = document.getElementById("estrellas");
+  const ctx = cv.getContext("2d");
+  let W, H, est = [], mx = 0, my = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const crear = () => {
+    W = cv.width = innerWidth * dpr; H = cv.height = innerHeight * dpr;
+    cv.style.width = innerWidth + "px"; cv.style.height = innerHeight + "px";
+    est = Array.from({length: Math.round(innerWidth * innerHeight / 3800)}, () => ({
+      x: Math.random() * W, y: Math.random() * H, z: Math.random() * .9 + .1,
+      r: Math.random() * 1.1 + .2, t: Math.random() * 6.28, v: Math.random() * .02 + .005
+    }));
+  };
+  crear();
+  addEventListener("resize", crear);
+  addEventListener("mousemove", (e) => { mx = (e.clientX / innerWidth - .5); my = (e.clientY / innerHeight - .5); });
+  const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let estrellaFugaz = null;
+  const cuadro = () => {
+    ctx.clearRect(0, 0, W, H);
+    for (const s of est) {
+      s.t += s.v;
+      const a = .35 + .65 * Math.abs(Math.sin(s.t));
+      const x = (s.x - mx * 40 * s.z * dpr - actual * 30 * s.z * dpr) % W;
+      const y = s.y - my * 30 * s.z * dpr;
+      ctx.globalAlpha = a * s.z;
+      ctx.fillStyle = s.z > .8 ? "#cfe9ff" : "#ffffff";
+      ctx.beginPath();
+      ctx.arc(x < 0 ? x + W : x, y, s.r * dpr * s.z * 1.4, 0, 6.283);
+      ctx.fill();
+    }
+    if (!estrellaFugaz && Math.random() < .004) estrellaFugaz = {x: Math.random() * W, y: Math.random() * H * .4, v: 14 * dpr, vida: 1};
+    if (estrellaFugaz) {
+      const f = estrellaFugaz;
+      const g = ctx.createLinearGradient(f.x, f.y, f.x - 140 * dpr, f.y - 50 * dpr);
+      g.addColorStop(0, `rgba(255,255,255,${f.vida})`); g.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.globalAlpha = 1; ctx.strokeStyle = g; ctx.lineWidth = 1.4 * dpr;
+      ctx.beginPath(); ctx.moveTo(f.x, f.y); ctx.lineTo(f.x - 140 * dpr, f.y - 50 * dpr); ctx.stroke();
+      f.x += f.v; f.y += f.v * .36; f.vida -= .02;
+      if (f.vida <= 0) estrellaFugaz = null;
+    }
+    ctx.globalAlpha = 1;
+    if (!quieto) requestAnimationFrame(cuadro);
+  };
+  cuadro();
+})();
+</script>
+</body>
+</html>
