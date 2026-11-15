@@ -1,0 +1,143 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/resumen.gd" id="1_xlv7u"]
+[ext_resource type="Texture2D" path="res://assets/fondos/seleccion.png" id="2_07vt1"]
+
+[node name="Resumen" type="Control" unique_id=441301067]
+layout_mode = 3
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xlv7u")
+
+[node name="Fondo" type="TextureRect" parent="." unique_id=669626411]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_07vt1")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Margen" type="MarginContainer" parent="." unique_id=955182702]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Contenido" type="VBoxContainer" parent="Margen" unique_id=483684970]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Encabezado" type="HBoxContainer" parent="Margen/Contenido" unique_id=2141373949]
+layout_mode = 2
+
+[node name="PanelTitulo" type="PanelContainer" parent="Margen/Contenido/Encabezado" unique_id=511888885]
+layout_mode = 2
+
+[node name="Titulo" type="Label" parent="Margen/Contenido/Encabezado/PanelTitulo" unique_id=215502314]
+layout_mode = 2
+theme_type_variation = &"TituloGrande"
+text = "Tu módulo de cultivo..."
+
+[node name="Espaciador" type="Control" parent="Margen/Contenido/Encabezado" unique_id=1100659764]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Instruccion" type="Label" parent="Margen/Contenido/Encabezado" unique_id=136516401]
+layout_mode = 2
+theme_type_variation = &"Subtitulo"
+text = "...está listo para viajar a la Luna.
+Revisa tu equipo y lanza la misión."
+
+[node name="Cuerpo" type="HBoxContainer" parent="Margen/Contenido" unique_id=1541180990]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="PanelEquipo" type="PanelContainer" parent="Margen/Contenido/Cuerpo" unique_id=770157946]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="Margen/Contenido/Cuerpo/PanelEquipo" unique_id=1861724220]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="FilaSemilla" type="HBoxContainer" parent="Margen/Contenido/Cuerpo/PanelEquipo/VBox" unique_id=387671679]
+layout_mode = 2
+
+[node name="IconoSemilla" type="TextureRect" parent="Margen/Contenido/Cuerpo/PanelEquipo/VBox/FilaSemilla" unique_id=579006904]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NombreSemilla" type="Label" parent="Margen/Contenido/Cuerpo/PanelEquipo/VBox/FilaSemilla" unique_id=573347568]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Subtitulo"
+text = "Semilla"
+vertical_alignment = 1
+
+[node name="Scroll" type="ScrollContainer" parent="Margen/Contenido/Cuerpo/PanelEquipo/VBox" unique_id=2048052995]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ListaComponentes" type="GridContainer" parent="Margen/Contenido/Cuerpo/PanelEquipo/VBox/Scroll" unique_id=1790117016]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 5
+
+[node name="PanelAnalisis" type="PanelContainer" parent="Margen/Contenido/Cuerpo" unique_id=60643878]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="TextoAnalisis" type="RichTextLabel" parent="Margen/Contenido/Cuerpo/PanelAnalisis" unique_id=625758092]
+unique_name_in_owner = true
+layout_mode = 2
+bbcode_enabled = true
+
+[node name="BarraInferior" type="HBoxContainer" parent="Margen/Contenido" unique_id=1007086581]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="BtnMenu" type="Button" parent="Margen/Contenido/BarraInferior" unique_id=1728156662]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 44)
+layout_mode = 2
+text = "Volver al menú"
+
+[node name="Espaciador" type="Control" parent="Margen/Contenido/BarraInferior" unique_id=1300297265]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="BtnAnterior" type="Button" parent="Margen/Contenido/BarraInferior" unique_id=507292468]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 44)
+layout_mode = 2
+text = "Paso anterior"
+
+[node name="BtnLanzar" type="Button" parent="Margen/Contenido/BarraInferior" unique_id=452784923]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "LANZAR MISIÓN"

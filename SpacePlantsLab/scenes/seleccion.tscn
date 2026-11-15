@@ -1,0 +1,210 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/seleccion.gd" id="1_8qvrd"]
+[ext_resource type="Texture2D" path="res://assets/fondos/seleccion.png" id="2_5shfy"]
+
+[node name="Seleccion" type="Control" unique_id=177844754]
+layout_mode = 3
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8qvrd")
+
+[node name="Fondo" type="TextureRect" parent="." unique_id=1365327698]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_5shfy")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Margen" type="MarginContainer" parent="." unique_id=1901122571]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Contenido" type="VBoxContainer" parent="Margen" unique_id=517313553]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Encabezado" type="HBoxContainer" parent="Margen/Contenido" unique_id=1476445000]
+layout_mode = 2
+
+[node name="PanelTitulo" type="PanelContainer" parent="Margen/Contenido/Encabezado" unique_id=2146898936]
+custom_minimum_size = Vector2(460, 0)
+layout_mode = 2
+
+[node name="Titulo" type="Label" parent="Margen/Contenido/Encabezado/PanelTitulo" unique_id=1110119365]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"TituloGrande"
+text = "Semillas"
+
+[node name="Espaciador" type="Control" parent="Margen/Contenido/Encabezado" unique_id=423071363]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Instruccion" type="Label" parent="Margen/Contenido/Encabezado" unique_id=1774842361]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 2
+theme_type_variation = &"Subtitulo"
+text = "Elige UNA opción."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Cuerpo" type="HBoxContainer" parent="Margen/Contenido" unique_id=945561299]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="PanelInfo" type="PanelContainer" parent="Margen/Contenido/Cuerpo" unique_id=350066618]
+custom_minimum_size = Vector2(470, 0)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Margen/Contenido/Cuerpo/PanelInfo" unique_id=103000501]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="InfoTitulo" type="Label" parent="Margen/Contenido/Cuerpo/PanelInfo/VBox" unique_id=364895796]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Subtitulo"
+autowrap_mode = 3
+
+[node name="InfoTexto" type="RichTextLabel" parent="Margen/Contenido/Cuerpo/PanelInfo/VBox" unique_id=1187659842]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+
+[node name="CentroOpciones" type="CenterContainer" parent="Margen/Contenido/Cuerpo" unique_id=1517590389]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Opciones" type="GridContainer" parent="Margen/Contenido/Cuerpo/CentroOpciones" unique_id=1099283874]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+columns = 2
+
+[node name="Presupuesto" type="HBoxContainer" parent="Margen/Contenido" unique_id=1539892648]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="LabelMasa" type="Label" parent="Margen/Contenido/Presupuesto" unique_id=834712301]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Masa de lanzamiento: 0 / 28"
+
+[node name="BarraMasa" type="ProgressBar" parent="Margen/Contenido/Presupuesto" unique_id=1222911334]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 18)
+layout_mode = 2
+size_flags_vertical = 4
+show_percentage = false
+
+[node name="LabelEnergia" type="Label" parent="Margen/Contenido/Presupuesto" unique_id=127200050]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Consumo de energía: 0"
+
+[node name="BarraInferior" type="HBoxContainer" parent="Margen/Contenido" unique_id=753605426]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="BtnMenu" type="Button" parent="Margen/Contenido/BarraInferior" unique_id=23525467]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 44)
+layout_mode = 2
+text = "Volver al menú"
+
+[node name="Espaciador" type="Control" parent="Margen/Contenido/BarraInferior" unique_id=2035418968]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="BtnInstrucciones" type="Button" parent="Margen/Contenido/BarraInferior" unique_id=608767087]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 44)
+layout_mode = 2
+text = "INSTRUCCIONES"
+
+[node name="@Control@25" type="Control" parent="Margen/Contenido/BarraInferior" unique_id=1182212238]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="LabelPaso" type="Label" parent="Margen/Contenido/BarraInferior" unique_id=903823]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Paso 1 de 10"
+
+[node name="BtnAnterior" type="Button" parent="Margen/Contenido/BarraInferior" unique_id=1608200557]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 44)
+layout_mode = 2
+text = "Paso anterior"
+
+[node name="BtnSiguiente" type="Button" parent="Margen/Contenido/BarraInferior" unique_id=1988813288]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 44)
+layout_mode = 2
+text = "Paso siguiente"
+
+[node name="PanelInstrucciones" type="PanelContainer" parent="." unique_id=531691353]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -190.0
+offset_right = 320.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelBorde"
+
+[node name="VBox" type="VBoxContainer" parent="PanelInstrucciones" unique_id=1088772539]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TituloInstr" type="Label" parent="PanelInstrucciones/VBox" unique_id=70439419]
+layout_mode = 2
+theme_type_variation = &"Subtitulo"
+text = "Instrucciones"
+
+[node name="TextoInstr" type="Label" parent="PanelInstrucciones/VBox" unique_id=2109735259]
+layout_mode = 2
+size_flags_vertical = 3
+text = "1. Pasa el mouse sobre cada opción para leer qué hace y cómo afecta al juego.
+2. Haz clic en una opción para elegirla: pasas al siguiente paso.
+3. En cada categoría todas las opciones cumplen el mismo objetivo: compara cuál te conviene más.
+4. Cuida la masa de lanzamiento: el cohete tiene un límite.
+5. Cuanta más energía gasten tus componentes, más rápido se agotará la luz.
+6. Al final revisa el resumen y lanza tu misión."
+autowrap_mode = 3
+
+[node name="BtnCerrarInstrucciones" type="Button" parent="PanelInstrucciones/VBox" unique_id=112549283]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Entendido"

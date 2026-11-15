@@ -1,0 +1,423 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/simulacion.gd" id="1_17ym3"]
+[ext_resource type="Texture2D" path="res://assets/fondos/juego.png" id="2_i22fv"]
+[ext_resource type="Script" path="res://scripts/ui/planta_visual.gd" id="3_xi4p6"]
+[ext_resource type="PackedScene" path="res://scenes/minijuego.tscn" id="4_1wbm6"]
+[ext_resource type="Script" path="res://scripts/ui/tres_en_raya.gd" id="5_a5so4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vyrbe"]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 10.0
+content_margin_bottom = 6.0
+bg_color = Color(0.75, 0.2, 0.2, 1)
+border_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ws120"]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 10.0
+content_margin_bottom = 6.0
+bg_color = Color(0.9, 0.3, 0.3, 1)
+border_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_71fye"]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 10.0
+content_margin_bottom = 6.0
+bg_color = Color(0.15, 0.55, 0.25, 1)
+border_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w6tia"]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 10.0
+content_margin_bottom = 6.0
+bg_color = Color(0.2, 0.68, 0.32, 1)
+border_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="Simulacion" type="Control" unique_id=311063416]
+layout_mode = 3
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_17ym3")
+
+[node name="Fondo" type="TextureRect" parent="." unique_id=755598018]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_i22fv")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="PlantaVisual" type="Control" parent="." unique_id=2012916895]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.355
+anchor_top = 0.27
+anchor_right = 0.66
+anchor_bottom = 0.76
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_xi4p6")
+
+[node name="Margen" type="MarginContainer" parent="." unique_id=1650280294]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="Contenido" type="VBoxContainer" parent="Margen" unique_id=1749539169]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BarraSuperior" type="HBoxContainer" parent="Margen/Contenido" unique_id=584407328]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BtnSalir" type="Button" parent="Margen/Contenido/BarraSuperior" unique_id=8110250]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 44)
+layout_mode = 2
+tooltip_text = "Salir al menú"
+theme_override_styles/normal = SubResource("StyleBoxFlat_vyrbe")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ws120")
+text = "X"
+
+[node name="PanelTiempo" type="PanelContainer" parent="Margen/Contenido/BarraSuperior" unique_id=1301072065]
+layout_mode = 2
+
+[node name="LabelTiempo" type="Label" parent="Margen/Contenido/BarraSuperior/PanelTiempo" unique_id=1078768742]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Tiempo 00:00:00:00"
+
+[node name="Espaciador" type="Control" parent="Margen/Contenido/BarraSuperior" unique_id=2146662375]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="PanelTitulo" type="PanelContainer" parent="Margen/Contenido/BarraSuperior" unique_id=260445017]
+layout_mode = 2
+
+[node name="Titulo" type="Label" parent="Margen/Contenido/BarraSuperior/PanelTitulo" unique_id=771858370]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Space Plants"
+
+[node name="@Control@34" type="Control" parent="Margen/Contenido/BarraSuperior" unique_id=40757601]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="PanelVelocidad" type="PanelContainer" parent="Margen/Contenido/BarraSuperior" unique_id=1228547786]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="Margen/Contenido/BarraSuperior/PanelVelocidad" unique_id=1151960450]
+layout_mode = 2
+
+[node name="BtnMenos" type="Button" parent="Margen/Contenido/BarraSuperior/PanelVelocidad/HBox" unique_id=1323913009]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "Más lento"
+text = "−"
+
+[node name="LabelVelocidad" type="Label" parent="Margen/Contenido/BarraSuperior/PanelVelocidad/HBox" unique_id=114662101]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Velocidad x1"
+horizontal_alignment = 1
+
+[node name="BtnMas" type="Button" parent="Margen/Contenido/BarraSuperior/PanelVelocidad/HBox" unique_id=552257792]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "Más rápido"
+text = "+"
+
+[node name="BtnCosechar" type="Button" parent="Margen/Contenido/BarraSuperior" unique_id=1091187523]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 44)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_71fye")
+theme_override_styles/hover = SubResource("StyleBoxFlat_w6tia")
+theme_override_font_sizes/font_size = 18
+text = "Cosechar"
+
+[node name="Cuerpo" type="HBoxContainer" parent="Margen/Contenido" unique_id=2085873167]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="Izquierda" type="VBoxContainer" parent="Margen/Contenido/Cuerpo" unique_id=1249453063]
+custom_minimum_size = Vector2(330, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PanelInfo" type="PanelContainer" parent="Margen/Contenido/Cuerpo/Izquierda" unique_id=2021347597]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBox" type="VBoxContainer" parent="Margen/Contenido/Cuerpo/Izquierda/PanelInfo" unique_id=45021537]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Titulo" type="Label" parent="Margen/Contenido/Cuerpo/Izquierda/PanelInfo/VBox" unique_id=836097049]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+text = "Misión y planta"
+
+[node name="InfoPlanta" type="RichTextLabel" parent="Margen/Contenido/Cuerpo/Izquierda/PanelInfo/VBox" unique_id=592772306]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+
+[node name="PanelRegistro" type="PanelContainer" parent="Margen/Contenido/Cuerpo/Izquierda" unique_id=157764456]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBox" type="VBoxContainer" parent="Margen/Contenido/Cuerpo/Izquierda/PanelRegistro" unique_id=1478574337]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Titulo" type="Label" parent="Margen/Contenido/Cuerpo/Izquierda/PanelRegistro/VBox" unique_id=1038720789]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+text = "Estado de la planta"
+
+[node name="Registro" type="RichTextLabel" parent="Margen/Contenido/Cuerpo/Izquierda/PanelRegistro/VBox" unique_id=1577378400]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+scroll_following = true
+
+[node name="Centro" type="VBoxContainer" parent="Margen/Contenido/Cuerpo" unique_id=1564048854]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PanelEtapa" type="PanelContainer" parent="Margen/Contenido/Cuerpo/Centro" unique_id=1747621216]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="LabelEtapa" type="Label" parent="Margen/Contenido/Cuerpo/Centro/PanelEtapa" unique_id=1939927315]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Subtitulo"
+text = "Día 1 de 10 · Germinación"
+
+[node name="EspacioPlanta" type="Control" parent="Margen/Contenido/Cuerpo/Centro" unique_id=2012916896]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="PanelVida" type="PanelContainer" parent="Margen/Contenido/Cuerpo/Centro" unique_id=182705492]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Margen/Contenido/Cuerpo/Centro/PanelVida" unique_id=1279981239]
+layout_mode = 2
+
+[node name="LabelVida" type="Label" parent="Margen/Contenido/Cuerpo/Centro/PanelVida/VBox" unique_id=246160545]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Vida de la planta: 100 %"
+horizontal_alignment = 1
+
+[node name="BarraVida" type="ProgressBar" parent="Margen/Contenido/Cuerpo/Centro/PanelVida/VBox" unique_id=83635977]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="Derecha" type="VBoxContainer" parent="Margen/Contenido/Cuerpo" unique_id=1415365934]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PanelControl" type="PanelContainer" parent="Margen/Contenido/Cuerpo/Derecha" unique_id=1194289254]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Margen/Contenido/Cuerpo/Derecha/PanelControl" unique_id=1189150731]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Titulo" type="Label" parent="Margen/Contenido/Cuerpo/Derecha/PanelControl/VBox" unique_id=537894490]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+text = "Panel de control (5 variables)"
+
+[node name="ListaVariables" type="VBoxContainer" parent="Margen/Contenido/Cuerpo/Derecha/PanelControl/VBox" unique_id=2010491751]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LabelConsumo" type="Label" parent="Margen/Contenido/Cuerpo/Derecha/PanelControl/VBox" unique_id=524229814]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.75, 0.8, 0.9, 1)
+autowrap_mode = 3
+
+[node name="PanelConsejos" type="PanelContainer" parent="Margen/Contenido/Cuerpo/Derecha" unique_id=1393347852]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBox" type="VBoxContainer" parent="Margen/Contenido/Cuerpo/Derecha/PanelConsejos" unique_id=1368875873]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Titulo" type="Label" parent="Margen/Contenido/Cuerpo/Derecha/PanelConsejos/VBox" unique_id=8965327]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+text = "Recomendaciones y pistas"
+
+[node name="Consejos" type="RichTextLabel" parent="Margen/Contenido/Cuerpo/Derecha/PanelConsejos/VBox" unique_id=740815856]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+
+[node name="Minijuego" type="Control" parent="." unique_id=1762211835 instance=ExtResource("4_1wbm6")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_a5so4")
+
+[node name="PanelResultado" type="PanelContainer" parent="." unique_id=1855586993]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -380.0
+offset_top = -280.0
+offset_right = 380.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelBorde"
+
+[node name="VBox" type="VBoxContainer" parent="PanelResultado" unique_id=1805347445]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TituloResultado" type="Label" parent="PanelResultado/VBox" unique_id=341324468]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"TituloGrande"
+text = "¡MISIÓN CUMPLIDA!"
+horizontal_alignment = 1
+
+[node name="TextoResultado" type="RichTextLabel" parent="PanelResultado/VBox" unique_id=516473520]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+
+[node name="Botones" type="HBoxContainer" parent="PanelResultado/VBox" unique_id=290531837]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="BtnResultadoMenu" type="Button" parent="PanelResultado/VBox/Botones" unique_id=319097385]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+text = "Ir al menú"
+
+[node name="BtnReintentar" type="Button" parent="PanelResultado/VBox/Botones" unique_id=2054569826]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 46)
+layout_mode = 2
+text = "Intentar de nuevo"
+
+[node name="PanelConfirmar" type="PanelContainer" parent="." unique_id=190941410]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -110.0
+offset_right = 260.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelBorde"
+
+[node name="VBox" type="VBoxContainer" parent="PanelConfirmar" unique_id=1516468745]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TextoConfirmar" type="Label" parent="PanelConfirmar/VBox" unique_id=711600832]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "¿Seguro?"
+autowrap_mode = 3
+
+[node name="Botones" type="HBoxContainer" parent="PanelConfirmar/VBox" unique_id=2054418678]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="BtnConfirmarSi" type="Button" parent="PanelConfirmar/VBox/Botones" unique_id=1781760255]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 42)
+layout_mode = 2
+text = "Sí"
+
+[node name="BtnConfirmarNo" type="Button" parent="PanelConfirmar/VBox/Botones" unique_id=443201193]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 42)
+layout_mode = 2
+text = "No"

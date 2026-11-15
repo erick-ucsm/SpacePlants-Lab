@@ -1,0 +1,124 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/tres_en_raya.gd" id="1_bmld2"]
+
+[node name="Minijuego" type="Control" unique_id=1762211835]
+layout_mode = 3
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bmld2")
+
+[node name="Oscuro" type="ColorRect" parent="." unique_id=1069571488]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=1624159228]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -260.0
+offset_right = 210.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelBorde"
+
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=796594296]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TituloMinijuego" type="Label" parent="Panel/VBox" unique_id=1350130653]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Subtitulo"
+text = "Recargar"
+horizontal_alignment = 1
+
+[node name="EstadoMinijuego" type="Label" parent="Panel/VBox" unique_id=1591804201]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Centro" type="CenterContainer" parent="Panel/VBox" unique_id=809370982]
+layout_mode = 2
+
+[node name="Tablero" type="GridContainer" parent="Panel/VBox/Centro" unique_id=423653789]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 3
+
+[node name="Celda0" type="Button" parent="Panel/VBox/Centro/Tablero" unique_id=2066580491]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_type_variation = &"Tarjeta"
+theme_override_font_sizes/font_size = 52
+
+[node name="Celda1" type="Button" parent="Panel/VBox/Centro/Tablero" unique_id=309077359]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_type_variation = &"Tarjeta"
+theme_override_font_sizes/font_size = 52
+
+[node name="Celda2" type="Button" parent="Panel/VBox/Centro/Tablero" unique_id=311620203]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_type_variation = &"Tarjeta"
+theme_override_font_sizes/font_size = 52
+
+[node name="Celda3" type="Button" parent="Panel/VBox/Centro/Tablero" unique_id=591467239]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_type_variation = &"Tarjeta"
+theme_override_font_sizes/font_size = 52
+
+[node name="Celda4" type="Button" parent="Panel/VBox/Centro/Tablero" unique_id=631380920]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_type_variation = &"Tarjeta"
+theme_override_font_sizes/font_size = 52
+
+[node name="Celda5" type="Button" parent="Panel/VBox/Centro/Tablero" unique_id=1470963935]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_type_variation = &"Tarjeta"
+theme_override_font_sizes/font_size = 52
+
+[node name="Celda6" type="Button" parent="Panel/VBox/Centro/Tablero" unique_id=1979181663]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_type_variation = &"Tarjeta"
+theme_override_font_sizes/font_size = 52
+
+[node name="Celda7" type="Button" parent="Panel/VBox/Centro/Tablero" unique_id=1407381235]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_type_variation = &"Tarjeta"
+theme_override_font_sizes/font_size = 52
+
+[node name="Celda8" type="Button" parent="Panel/VBox/Centro/Tablero" unique_id=2132282850]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_type_variation = &"Tarjeta"
+theme_override_font_sizes/font_size = 52
+
+[node name="BtnAccionMinijuego" type="Button" parent="Panel/VBox" unique_id=522839746]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+text = "Cancelar"

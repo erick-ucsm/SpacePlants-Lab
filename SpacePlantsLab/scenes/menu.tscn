@@ -1,0 +1,166 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/menu.gd" id="1_con2f"]
+[ext_resource type="Texture2D" path="res://assets/fondos/menu.png" id="2_mhnvy"]
+[ext_resource type="Texture2D" path="res://assets/logo.png" id="3_4ytvr"]
+
+[node name="Menu" type="Control" unique_id=820653948]
+layout_mode = 3
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_con2f")
+
+[node name="Fondo" type="TextureRect" parent="." unique_id=192221619]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_mhnvy")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Margen" type="MarginContainer" parent="." unique_id=1889057393]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 48
+
+[node name="Fila" type="HBoxContainer" parent="Margen" unique_id=898357232]
+layout_mode = 2
+
+[node name="Izquierda" type="VBoxContainer" parent="Margen/Fila" unique_id=55685938]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="Espaciador" type="Control" parent="Margen/Fila/Izquierda" unique_id=177206021]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="BtnJugar" type="Button" parent="Margen/Fila/Izquierda" unique_id=1218500447]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Jugar"
+
+[node name="BtnAjustes" type="Button" parent="Margen/Fila/Izquierda" unique_id=1448198261]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Ajustes"
+
+[node name="@Control@2" type="Control" parent="Margen/Fila/Izquierda" unique_id=1280890124]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="PanelRecord" type="PanelContainer" parent="Margen/Fila/Izquierda" unique_id=462483614]
+layout_mode = 2
+
+[node name="LabelRecord" type="Label" parent="Margen/Fila/Izquierda/PanelRecord" unique_id=620671130]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Plantas cosechadas con éxito: 0"
+
+[node name="Espaciador" type="Control" parent="Margen/Fila" unique_id=1683211925]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Derecha" type="VBoxContainer" parent="Margen/Fila" unique_id=99722617]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Titulo" type="Label" parent="Margen/Fila/Derecha" unique_id=1021638765]
+layout_mode = 2
+theme_type_variation = &"TituloGrande"
+text = "Space Plants"
+horizontal_alignment = 1
+
+[node name="Lema" type="Label" parent="Margen/Fila/Derecha" unique_id=324776796]
+layout_mode = 2
+theme_type_variation = &"Subtitulo"
+text = "Cultiva vida en la Luna"
+horizontal_alignment = 1
+
+[node name="Logo" type="TextureRect" parent="Margen/Fila/Derecha" unique_id=999197277]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+texture = ExtResource("3_4ytvr")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PanelAjustes" type="PanelContainer" parent="." unique_id=2114153743]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -165.0
+offset_right = 230.0
+offset_bottom = 165.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelBorde"
+
+[node name="VBox" type="VBoxContainer" parent="PanelAjustes" unique_id=670505788]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TituloAjustes" type="Label" parent="PanelAjustes/VBox" unique_id=1665222643]
+layout_mode = 2
+theme_type_variation = &"Subtitulo"
+text = "Ajustes"
+
+[node name="CheckPantallaCompleta" type="CheckButton" parent="PanelAjustes/VBox" unique_id=1834075979]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Pantalla completa"
+
+[node name="FilaVelocidad" type="HBoxContainer" parent="PanelAjustes/VBox" unique_id=778221490]
+layout_mode = 2
+
+[node name="LabelVel" type="Label" parent="PanelAjustes/VBox/FilaVelocidad" unique_id=1802193431]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Velocidad inicial del tiempo"
+
+[node name="OpcionVelocidad" type="OptionButton" parent="PanelAjustes/VBox/FilaVelocidad" unique_id=975454944]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BtnBorrarRecord" type="Button" parent="PanelAjustes/VBox" unique_id=40990995]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Borrar récord de cosechas"
+
+[node name="Espaciador" type="Control" parent="PanelAjustes/VBox" unique_id=1321493149]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="BtnCerrarAjustes" type="Button" parent="PanelAjustes/VBox" unique_id=678237410]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cerrar"
