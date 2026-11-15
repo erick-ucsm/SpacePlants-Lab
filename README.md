@@ -5,7 +5,7 @@
 A serious web game where you design a space growth module, grow real plants that NASA has harvested in space, and keep them alive through 5 minigames.
 
 ## ▶️ Play now (no download needed)
-**https://YOUR-USERNAME.github.io/SpacePlants-Lab/**
+**https://erick-ucsm.github.io/SpacePlants-Lab/**
 
 Works in Chrome, Edge and Firefox on a computer. The first load takes a few seconds.
 Language: English by default · Spanish available in **Settings → Language**.
