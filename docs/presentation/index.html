@@ -200,6 +200,15 @@ h3{font-size:clamp(17px,1.35vw,21px);font-weight:600;letter-spacing:-.01em;line-
 /* ---------- 7 Cierre ---------- */
 .cierre{display:grid;grid-template-rows:1fr auto;height:100%;gap:28px;text-align:center}
 .cierre .centro{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px}
+.cierre .acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.cierre .accion{display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;color:var(--ink);border:1px solid var(--stroke2);background:rgba(255,255,255,.05);transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s}
+.cierre .accion:hover{transform:translateY(-2px);background:rgba(255,255,255,.09)}
+.cierre .accion.video{background:linear-gradient(135deg,var(--mint),var(--cyan));color:#04121a;border:0;box-shadow:0 8px 30px rgba(62,240,165,.25)}
+.cierre .accion.video:hover{box-shadow:0 10px 38px rgba(62,240,165,.42)}
+.cierre .accion .play{width:24px;height:24px;border-radius:50%;background:#04121a;display:grid;place-items:center}
+.cierre .accion .play svg{width:11px;height:11px;fill:var(--mint);margin-left:2px}
+.cierre .accion small{font-weight:500;opacity:.75}
+@media (max-height:860px){.cierre .logo-final{width:84px!important;height:84px!important}.cierre .centro{gap:14px}.cierre h2{font-size:clamp(28px,6.2vh,52px)!important;max-width:22ch!important}.cierre{gap:18px}}
 .cierre h2{font-size:clamp(34px,5vw,74px);max-width:16ch;margin:0}
 .criterios{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;text-align:left}
 .criterio{padding:16px 18px}
@@ -445,13 +454,17 @@ kbd{font-family:var(--body);font-size:11px;padding:2px 7px;border:1px solid var(
         <span class="chip"><svg><use href="#i-balanza"/></svg>Balance tested by simulation</span>
         <span class="chip"><svg><use href="#i-check"/></svg>Real mission data</span>
       </div>
+      <div class="acciones" data-a style="--d:4">
+        <a class="accion video" href="https://youtu.be/QswnJxCsJ_0" target="_blank" rel="noopener"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z"/></svg></span>Watch us test the game <small>· 30 s</small></a>
+        <a class="accion" href="https://erick-ucsm.github.io/SpacePlants-Lab/" target="_blank" rel="noopener">Play it yourself →</a>
+      </div>
     </div>
     <div class="criterios">
-      <div class="criterio vidrio" data-a style="--d:4"><span class="n">Impact</span><h3>Learning through play</h3><p>Real space science for students of any age.</p></div>
-      <div class="criterio vidrio" data-a style="--d:5"><span class="n">Creativity</span><h3>5 minigames</h3><p>Spacecraft, pioneers, planets and aliens in one game.</p></div>
-      <div class="criterio vidrio" data-a style="--d:6"><span class="n">Validity</span><h3>NASA data</h3><p>Veggie, Plant Habitat, Artemis and real missions.</p></div>
-      <div class="criterio vidrio" data-a style="--d:7"><span class="n">Relevance</span><h3>Mission design</h3><p>Answers the Space Mission Design Game challenge.</p></div>
-      <div class="criterio vidrio" data-a style="--d:8"><span class="n">Presentation</span><h3>Thank you!</h3><p>SpacePlants Lab Team · Space Apps 2026.</p></div>
+      <div class="criterio vidrio" data-a style="--d:5"><span class="n">Impact</span><h3>Learning through play</h3><p>Real space science for students of any age.</p></div>
+      <div class="criterio vidrio" data-a style="--d:6"><span class="n">Creativity</span><h3>5 minigames</h3><p>Spacecraft, pioneers, planets and aliens in one game.</p></div>
+      <div class="criterio vidrio" data-a style="--d:7"><span class="n">Validity</span><h3>NASA data</h3><p>Veggie, Plant Habitat, Artemis and real missions.</p></div>
+      <div class="criterio vidrio" data-a style="--d:8"><span class="n">Relevance</span><h3>Mission design</h3><p>Answers the Space Mission Design Game challenge.</p></div>
+      <div class="criterio vidrio" data-a style="--d:9"><span class="n">Presentation</span><h3>Thank you!</h3><p>SpacePlants Lab Team · Space Apps 2026.</p></div>
     </div>
   </div>
 </section>
